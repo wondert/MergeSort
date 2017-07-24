@@ -3,9 +3,21 @@
 from dupsort import recursivesort,
 
 
-def merged(*sequences, blocks=2):
+def merged(*sequences):
     '''merge n sequences into single sequence iteratively by index.'''
-    # build new sequnce from n blocks
+    # build new sequnce from n blocks. blocks not required to be same length.
+    static_length = len(sequences[0])
+    mergedsequence = []
+    index = 0
+    while True:
+        for element in sequences:
+            try:
+                mergedsequence.append(element[index])
+            except IndexError:
+                break
+        index += 1
+        if static_length == index:
+            break
 
     return mergedsequence
 
@@ -22,10 +34,12 @@ def splitseq(reseq, blocks=2):
 def splitsort(randomseq, key=None, reverse=False):
     '''splitsort splits a sequence in half, recursively sorts, then merges.'''
 
+    # consider refactoring into generic functions to handle n sequences.
     if key:
         # generate mappings to recall original index, keys, values
         keyedseq = [(key(element), index)
                     for index, element in enumerate(randomseq)]
+        # maybe come up with a function to do this step...
         seq1 = keyedseq[:len(keyedseq)//2]
         seq2 = keyedseq[(len(keyedseq)//2):]
 
