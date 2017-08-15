@@ -1,6 +1,6 @@
 """The merged module implements the mergesort algorithm."""
 
-from dupsort import recursivesort
+from ndupsort import recursivesort
 
 
 def merged(*sequences):
@@ -22,7 +22,7 @@ def merged(*sequences):
     return mergedsequence
 
 
-def splitseq(reseq, blocks=2):
+def splitseq(reseq, *, blocks=2):
     """Splits a sequence into n blocks. returns a tuple of n lists."""
     # TODO refactor to a generator function
     # split sequence into n blocks of equal size
@@ -58,7 +58,7 @@ def splitseq(reseq, blocks=2):
         return tuple(item for item in sections)
 
 
-def generic_splitsort(randomseq, blocks=2, key=None, reverse=False):
+def generic_splitsort(randomseq, *, blocks=2, key=None, reverse=False):
     """Splits a sequence into n blocks, recursively sorts, then merges."""
     # TODO refactor into generic sorting function that handles n sequences.
     if key:
@@ -68,7 +68,7 @@ def generic_splitsort(randomseq, blocks=2, key=None, reverse=False):
 
         # split keyed sequence into n blocks
         # TODO - does splitseq work with keyedseq tuple elements???
-        kseq = splitseq(keyedseq, blocks)
+        kseq = splitseq(keyedseq, blocks=blocks)
 
         # set globals to track value swaps
         switch = 0
@@ -87,7 +87,7 @@ def generic_splitsort(randomseq, blocks=2, key=None, reverse=False):
                 # TODO - check if statement below gives expected result...
                 # TODO - since seq is actually a tuple
                 reseq = merged(*tuple(element for element in sortedseq))
-                kseq = splitseq(reseq, blocks)
+                kseq = splitseq(reseq, blocks=blocks)
                 flip = 0
 
             elif compares:       # Case2 - keep sorting if last loop had sorts
@@ -100,7 +100,7 @@ def generic_splitsort(randomseq, blocks=2, key=None, reverse=False):
                 # TODO - check if statement below gives expected result...
                 # TODO - since seq is actually a tuple
                 reseq = merged(*tuple(element for element in sortedseq))
-                kseq = splitseq(reseq, blocks)
+                kseq = splitseq(reseq, blocks=blocks)
 
             else:               # Case3 - no sorts
                 break
@@ -115,7 +115,7 @@ def generic_splitsort(randomseq, blocks=2, key=None, reverse=False):
 
     else:
         # split sequence into n blocks
-        kseq = splitseq(randomseq, blocks)
+        kseq = splitseq(randomseq, blocks=blocks)
 
         # set globals to track value swaps
         switch = 0
@@ -132,7 +132,7 @@ def generic_splitsort(randomseq, blocks=2, key=None, reverse=False):
                     sortedseq.append(seq)
                     compares += switch
                 reseq = merged(*tuple(element for element in sortedseq))
-                kseq = splitseq(reseq, blocks)
+                kseq = splitseq(reseq, blocks=blocks)
                 flip = 0
 
             elif compares:       # Case2 - keep sorting if last loop had sorts
@@ -143,7 +143,7 @@ def generic_splitsort(randomseq, blocks=2, key=None, reverse=False):
                     sortedseq.append(seq)
                     compares += switch
                 reseq = merged(*tuple(element for element in sortedseq))
-                kseq = splitseq(reseq, blocks)
+                kseq = splitseq(reseq, blocks=blocks)
 
             else:               # Case3 - no sorts
                 break
@@ -157,7 +157,7 @@ def generic_splitsort(randomseq, blocks=2, key=None, reverse=False):
     return seq
 
 
-def splitsort(randomseq, key=None, reverse=False):
+def splitsort(randomseq, *, key=None, reverse=False):
     """Splits a sequence into two blocks, recursively sorts, then merges."""
     if key:
         # generate mappings to recall original index, keys, values
